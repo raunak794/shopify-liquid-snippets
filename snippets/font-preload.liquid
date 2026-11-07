@@ -1,0 +1,14 @@
+{%- comment -%}
+  Preload the one font file used above the fold (usually the heading font).
+  Put it in <head>, before your stylesheets.
+
+  Usage:
+    {% render 'font-preload', font: settings.type_header_font %}
+
+  Preload one font, not all of them. Every extra preload competes
+  with the hero image for bandwidth.
+{%- endcomment -%}
+
+{%- if font != blank -%}
+  <link rel="preload" as="font" type="font/woff2" href="{{ font | font_url }}" crossorigin>
+{%- endif -%}

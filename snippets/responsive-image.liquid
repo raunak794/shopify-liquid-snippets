@@ -1,0 +1,41 @@
+{%- comment -%}
+  Responsive image with sensible loading defaults.
+
+  Usage:
+    {% render 'responsive-image', image: section.settings.image, eager: true %}
+    {% render 'responsive-image', image: product.featured_image, sizes: '(min-width: 990px) 50vw, 100vw' %}
+
+  Params:
+    image  - image object (required)
+    eager  - true for the first, above-the-fold image (the LCP image). Default: false
+    sizes  - how wide the image is displayed. Default: '100vw'
+    class  - optional CSS class
+{%- endcomment -%}
+
+{%- liquid
+  assign img_sizes = sizes | default: '100vw'
+  assign img_loading = 'lazy'
+  assign img_priority = 'auto'
+  assign img_preload = false
+
+  if eager
+    assign img_loading = 'eager'
+    assign img_priority = 'high'
+    assign img_preload = true
+  endif
+-%}
+
+{%- if image != blank -%}
+  {{
+    image
+    | image_url: width: 1800
+    | image_tag:
+      widths: '375, 550, 750, 1100, 1500, 1800',
+      sizes: img_sizes,
+      loading: img_loading,
+      fetchpriority: img_priority,
+      preload: img_preload,
+      class: class,
+      alt: image.alt
+  }}
+{%- endif -%}

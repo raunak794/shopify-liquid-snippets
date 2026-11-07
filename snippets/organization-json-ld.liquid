@@ -1,0 +1,22 @@
+{%- comment -%}
+  Organization structured data for the home page.
+
+  Usage (in layout/theme.liquid):
+    {%- if template.name == 'index' -%}
+      {% render 'organization-json-ld', logo: settings.logo %}
+    {%- endif -%}
+
+  The logo setting name depends on your theme (settings.logo in Dawn).
+{%- endcomment -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ request.origin | append: routes.root_url | json }}
+  {%- if logo != blank -%},
+  "logo": {{ logo | image_url: width: 600 | prepend: 'https:' | json }}
+  {%- endif -%}
+}
+</script>
